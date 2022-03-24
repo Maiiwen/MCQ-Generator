@@ -4,11 +4,12 @@ include '../app/Manager/AnswerManager.php';
 include '../app/Manager/QuestionManager.php';
 
 
+
 // récupération du QCM
-$qcmObj = QcmManager::get($_GET["qcm"]);
+$qcmObj = QcmManager::get($_GET['p']);
 
 // récupération des questions du QCM
-$questions = QuestionManager::getFromQcm($_GET["qcm"]);
+$questions = QuestionManager::getFromQcm($_GET['p']);
 
 // Création et hydratation des objets du QCM
 
@@ -26,7 +27,3 @@ foreach ($questions as $question) {
 }
 
 $qcmObj->show();
-
-
-
-// var_dump($qcmObj);

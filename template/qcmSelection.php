@@ -3,7 +3,7 @@ include '../app/Manager/QcmManager.php';
 
 $qcms = QcmManager::getAll();
 if ($_POST) {
-    $url = "index.php?qcm=" . $_POST['qcm_id'];
+    $url = "consult/" . $_POST['qcm_id'];
     header("Location: " . $url);
 }
 ?>
