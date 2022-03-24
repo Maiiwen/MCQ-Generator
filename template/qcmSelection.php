@@ -1,4 +1,4 @@
-<?php include '../app/includes/top.php';
+<?php include '../template/partials/top.php';
 include '../app/Manager/QcmManager.php';
 
 $qcms = QcmManager::getAll();
@@ -31,4 +31,4 @@ if ($_POST) {
         </div>
     </div>
 </div>
-<?php include '../app/includes/bottom.php' ?>
+<?php include '../template/partials/bottom.php' ?>

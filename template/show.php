@@ -1,4 +1,4 @@
-<?php include '../app/includes/top.php' ?>
+<?php include '../template/partials/top.php' ?>
 <a href="/" class="btn btn-secondary m-2">Retour à la sélection</a>
 <?php if ($_POST) : ?>
   <a href="?qcm=<?= $_GET['qcm'] ?>" class="btn btn-secondary m-2">Retour au questionnaire</a>
@@ -48,4 +48,4 @@
     </div>
   </div>
 </div>
-<?php include '../app/includes/bottom.php' ?>
+<?php include '../template/partials/bottom.php' ?>

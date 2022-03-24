@@ -9,5 +9,5 @@ require '../app/Entity/Answer.php';
 if (!empty($_GET['qcm'])) {
     require '../app/Object/QCMOBJ.php';
 } else {
-    require '../app/includes/qcmSelection.php';
+    require '../template/qcmSelection.php';
 }

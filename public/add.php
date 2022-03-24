@@ -1,6 +1,6 @@
-<?php include '../app/includes/top.php';
+<?php include '../template/partials/top.php';
 if ($_POST) {
-    include '../app/includes/pdo.php';
+    include '../template/pdo.php';
     if (!empty($_POST['qcmName'])) {
         $sql = "INSERT INTO `qcm`(`qcm_title`) VALUES (:qcm_title)";
         $res = $pdo->prepare($sql);
@@ -57,4 +57,4 @@ if ($_POST) {
 
 <script src="scripts/addQCM.js"></script>
 
-<?php include '../app/includes/bottom.php' ?>
+<?php include '../template/partials/bottom.php' ?>
