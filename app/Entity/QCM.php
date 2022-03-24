@@ -4,6 +4,7 @@ class QCM
 {
     private int $id;
     private string $title;
+    /** @var Question[] */
     private array $questions;
 
     /**
@@ -32,7 +33,7 @@ class QCM
 
     public function show()
     {
-        include '../app/includes/show.php';
+        include '../template/show.php';
     }
 
     /**

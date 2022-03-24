@@ -14,7 +14,7 @@ class Answer
     }
 
     /**
-     * Get the value of answer
+     * Get the value of Title
      */
     public function getTitle()
     {
@@ -22,7 +22,7 @@ class Answer
     }
 
     /**
-     * Set the value of answer
+     * Set the value of Title
      *
      * @return  self
      */

@@ -4,6 +4,7 @@ class Question
 {
     private int $id;
     private string $title;
+    /** @var Answer[] */
     private array $answers;
 
     public function __construct($array)
