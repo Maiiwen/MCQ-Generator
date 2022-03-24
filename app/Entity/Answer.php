@@ -6,6 +6,12 @@ class Answer
     private string $title;
     private bool $isRight;
 
+    /**
+     * __construct
+     *
+     * @param  mixed $array
+     * @return void
+     */
     public function __construct($array)
     {
         $this->setTitle($array['answer_title']);
@@ -63,7 +69,7 @@ class Answer
 
     /**
      * Set the value of isRight
-     *
+     * @param bool $isRight
      * @return  self
      */
     public function setIsRight($isRight)
