@@ -1,26 +1,7 @@
 <?php
-
-use FFI\CData;
-
-class QuestionManager
+require '../app/Manager/AnswerManager.php';
+class QuestionManager extends Manager
 {
-
-    private static $pdo;
-
-    public static function getPdoInstance()
-    {
-        if (self::$pdo == NULL) // Je créer un singleton de PDO ici dans le but de ne pas l'instancier à chaque appel de la méthode
-        {
-            try {
-                self::$pdo = new PDO('mysql:host=localhost;dbname=qcm', 'root', '');
-            } catch (PDOException $e) {
-                print "Erreur !: " . $e->getMessage() . "<br/>";
-                die();
-            }
-        }
-
-        return self::$pdo;
-    }
 
     public static function getAll()
     {
@@ -42,8 +23,8 @@ class QuestionManager
         $req->execute([
             'id' => $id
         ]);
-        $product = $req->fetch(PDO::FETCH_ASSOC);
-        return new Question($product);
+        $item = $req->fetch(PDO::FETCH_ASSOC);
+        return new Question($item['question_title'], $item['question_id']);
     }
     public static function getFromQcm(int $id)
     {
@@ -61,10 +42,58 @@ class QuestionManager
 
     private static function hydrateCollection(array $collection)
     {
-        foreach ($collection as $index => $productInfo) {
-            $collection[$index] = new Question($productInfo);
+        foreach ($collection as $index => $item) {
+            $collection[$index] = new Question($item['question_title'], $item['question_id']);
         }
 
         return $collection;
+    }
+
+    public static function addQuestion(Question $question, int $id)
+    {
+        $pdo = self::getPdoInstance();
+
+        $sql = "INSERT INTO `questions`(`question_title`, `qcm_id`) VALUES (:question_title,:qcm_id)";
+        $res = $pdo->prepare($sql);
+        $res->execute(
+            ["question_title" => $question->getTitle(), "qcm_id" => $id]
+        );
+
+        $questionId = $pdo->lastInsertId();
+        foreach ($question->getAnswers() as $value) {
+            AnswerManager::addAnswer($value, $questionId);
+        }
+    }
+    public static function updateQuestion(Question $question)
+    {
+        $pdo = self::getPdoInstance();
+
+        $sql = "UPDATE `questions` 
+        SET `question_title` = :question_title
+        WHERE `questions`.`question_id` = :question_id";
+        $res = $pdo->prepare($sql);
+        $res->execute(
+            [
+                "question_title" => $question->getTitle(),
+                "question_id" => $question->getId()
+            ]
+        );
+        foreach ($question->getAnswers() as $value) {
+            if ($value->getId() == 0) {
+                AnswerManager::addAnswer($value, $question->getId());
+            } else {
+                AnswerManager::updateAnswer($value);
+            }
+        }
+    }
+    public static function deleteQuestion(int $id)
+    {
+        $pdo = self::getPdoInstance();
+
+        $sql = "DELETE FROM `questions` WHERE `question_id` = :question_id ";
+        $res = $pdo->prepare($sql);
+        $res->execute(
+            ["question_id" => $id]
+        );
     }
 }

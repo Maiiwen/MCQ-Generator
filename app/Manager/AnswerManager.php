@@ -1,24 +1,6 @@
 <?php
-
-class AnswerManager
+class AnswerManager extends Manager
 {
-
-    private static $pdo;
-
-    public static function getPdoInstance()
-    {
-        if (self::$pdo == NULL) // Je créer un singleton de PDO ici dans le but de ne pas l'instancier à chaque appel de la méthode
-        {
-            try {
-                self::$pdo = new PDO('mysql:host=localhost;dbname=qcm', 'root', '');
-            } catch (PDOException $e) {
-                print "Erreur !: " . $e->getMessage() . "<br/>";
-                die();
-            }
-        }
-
-        return self::$pdo;
-    }
 
     public static function getAll()
     {
@@ -40,8 +22,8 @@ class AnswerManager
         $req->execute([
             'id' => $id
         ]);
-        $product = $req->fetch(PDO::FETCH_ASSOC);
-        return new Answer($product);
+        $item = $req->fetch(PDO::FETCH_ASSOC);
+        return new Answer($item['answer_title'], $item['answer_isRight'], $item['answer_id']);
     }
 
     public static function getFromQuestion(int $id)
@@ -59,10 +41,48 @@ class AnswerManager
 
     private static function hydrateCollection(array $collection)
     {
-        foreach ($collection as $index => $productInfo) {
-            $collection[$index] = new Answer($productInfo);
+        foreach ($collection as $index => $item) {
+            $collection[$index] = new Answer($item['answer_title'], $item['answer_isRight'], $item['answer_id']);
         }
 
         return $collection;
+    }
+
+    public static function addAnswer(Answer $answer, int $id)
+    {
+        $pdo = self::getPdoInstance();
+
+        $sql = "INSERT INTO `answers`(`answer_title`, `answer_isRight`, `question_id`) VALUES (:answer_title,:answer_isRight,:question_id)";
+        $res = $pdo->prepare($sql);
+        $res->execute(
+            ["answer_title" => $answer->getTitle(), "answer_isRight" => $answer->getIsRight() ? 1 : 0, "question_id" => $id]
+        );
+    }
+
+    public static function updateAnswer(Answer $answer)
+    {
+        $pdo = self::getPdoInstance();
+        $sql = "UPDATE `answers` 
+        SET `answer_title` = :answer_title, 
+        `answer_isRight` = :answer_isRight
+        WHERE `answer_id` = :answer_id";
+        $res = $pdo->prepare($sql);
+        $res->execute(
+            [
+                "answer_title" => $answer->getTitle(),
+                "answer_isRight" => $answer->getIsRight() ? 1 : 0,
+                "answer_id" => $answer->getId()
+            ]
+        );
+    }
+    public static function deleteAnswer(int $id)
+    {
+        $pdo = self::getPdoInstance();
+
+        $sql = "DELETE FROM `answers` WHERE `answer_id` = :answer_id ";
+        $res = $pdo->prepare($sql);
+        $res->execute(
+            ["answer_id" => $id]
+        );
     }
 }
