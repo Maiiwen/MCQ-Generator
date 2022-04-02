@@ -1,4 +1,4 @@
 Options +FollowSymlinks
 RewriteEngine on
-RewriteRule ^(.*)/([0-9A-Za-z]+)$  /index.php?c=$1&p=$2
+RewriteRule ^(.*)/([0-9]+)$  /index.php?c=$1&p=$2
 RewriteRule ^([A-z]+)$  /index.php?c=$1
