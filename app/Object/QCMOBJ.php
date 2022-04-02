@@ -1,9 +1,5 @@
 <?php
 include '../app/Manager/QcmManager.php';
-include '../app/Manager/AnswerManager.php';
-include '../app/Manager/QuestionManager.php';
-
-
 
 // récupération du QCM
 $qcmObj = QcmManager::get($_GET['p']);
@@ -16,14 +12,12 @@ $questions = QuestionManager::getFromQcm($_GET['p']);
 foreach ($questions as $question) {
 
     // création/ajout de la question au QCM
-    $newQuestion = new Question(['question_id' => $question->getId(), 'question_title' => $question->getTitle()]);
+    $newQuestion = new Question($question->getTitle(), $question->getId());
     $qcmObj->addQuestions($newQuestion);
     // récupération des réponses à la question 
     $answers = AnswerManager::getFromQuestion($newQuestion->getId());
     // création/ajout des réponses à la question
     foreach ($answers as $answer) {
-        $newQuestion->addAnswers(new Answer(['answer_id' => $answer->getId(), 'answer_title' => $answer->getTitle(), 'answer_isRight' => $answer->getIsRight()]));
+        $newQuestion->addAnswers(new Answer($answer->getTitle(), $answer->getIsRight(), $answer->getId()));
     }
 }
-
-$qcmObj->show();

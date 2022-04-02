@@ -1,11 +1,12 @@
-<?php include '../template/partials/top.php' ?>
+<?php include '../template/partials/top.php'; ?>
 <a href="/" class="btn btn-secondary m-2">Retour à la sélection</a>
 <?php if ($_POST) : ?>
   <a href="?qcm=<?= $_GET['p'] ?>" class="btn btn-secondary m-2">Retour au questionnaire</a>
+
 <?php
 
 endif; ?>
-
+<h1 class="text-center"><?= $this->getTitle() ?></h1>
 <div class="container">
   <div class="row">
     <div class="col-12 col-sm-12 col-md-11 col-lg-9 col-xl-8 col-xl-6 mx-auto ">

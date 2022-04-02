@@ -1,40 +1,6 @@
-<?php include '../template/partials/top.php';
-if ($_POST) {
-    include '../template/pdo.php';
-    if (!empty($_POST['qcmName'])) {
-        $sql = "INSERT INTO `qcm`(`qcm_title`) VALUES (:qcm_title)";
-        $res = $pdo->prepare($sql);
-        $res->execute(["qcm_title" => $_POST["qcmName"]]);
-        $qcmId = $pdo->lastInsertId();
-        unset($_POST["qcmName"]);
-        var_dump($_POST);
-        $keys = array_keys($_POST);
-
-        foreach ($_POST as $question) {
-            $sql = "INSERT INTO `questions`(`question_title`, `qcm_id`) VALUES (:question_title,:qcm_id)";
-            $res = $pdo->prepare($sql);
-            $res->execute(["question_title" => $question['title'], "qcm_id" => $qcmId]);
-            $questId = $pdo->lastInsertId();
-            foreach ($question['answers'] as $key => $value) {
-                $sql = "INSERT INTO `answers`(`answer_title`, `answer_isRight`, `question_id`) VALUES (:answer_title,:answer_isRight,:question_id)";
-                var_dump($question['AnswerRight'] - 1 == $key);
-                $res = $pdo->prepare($sql);
-                $res->execute(["answer_title" => $value, "answer_isRight" => $question['AnswerRight'] - 1 == $key ? 1 : 0, "question_id" => $questId]);
-            }
-        }
-    } else {
-        header('Location: add.php?error');
-    }
-
-    exit;
-}
-
-?>
+<?php include '../template/partials/top.php' ?>
 
 <h1 class="text-center">Création d'un QCM</h1>
-<?php if (isset($_GET['error'])) { ?>
-
-<?php } ?>
 
 <div class="container">
     <div class="row">
