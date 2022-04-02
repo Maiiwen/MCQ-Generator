@@ -6,17 +6,21 @@ class Answer
     private string $title;
     private bool $isRight;
 
+
     /**
      * __construct
      *
-     * @param  mixed $array
+     * @param  string $answer_title
+     * @param  bool $answer_isRight
+     * @param  int $answer_id
      * @return void
      */
-    public function __construct($array)
+    public function __construct($answer_title, $answer_isRight, $answer_id = 0)
     {
-        $this->setTitle($array['answer_title']);
-        $this->setId($array['answer_id']);
-        $this->setIsRight($array['answer_isRight']);
+        $this
+            ->setTitle($answer_title)
+            ->setId($answer_id)
+            ->setIsRight($answer_isRight);
     }
 
     /**

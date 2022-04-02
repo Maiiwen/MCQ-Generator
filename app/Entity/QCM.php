@@ -1,5 +1,6 @@
 <?php
 
+require '../app/Entity/Question.php';
 class QCM
 {
     private int $id;
@@ -7,15 +8,27 @@ class QCM
     /** @var Question[] */
     private array $questions;
 
+
+    /**
+     * __construct
+     *
+     * @param  string $qcm_title
+     * @param  int $qcm_id
+     * @return void
+     */
+    public function __construct($qcm_title, $qcm_id = 0)
+    {
+        $this
+            ->setTitle($qcm_title)
+            ->setId($qcm_id);
+    }
+
+
     /**
      * Get the value of questions
      * 
      * @return array $questions
      */
-    public function __construct($array)
-    {
-        $this->setTitle($array['qcm_title'])->setId($array['qcm_id']);
-    }
     public function getQuestions()
     {
         return $this->questions;

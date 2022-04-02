@@ -1,16 +1,26 @@
 <?php
-
+require '../app/Entity/Answer.php';
 class Question
 {
     private int $id;
     private string $title;
+    private int $qcm_id;
     /** @var Answer[] */
     private array $answers;
 
-    public function __construct($array)
+    /**
+     * __construct
+     *
+     * @param  string $question_title
+     * @param  int $question_id
+     * @return void
+     */
+    public function __construct($question_title, $question_id = 0, $qcm_id = 0)
     {
-        $this->setTitle($array['question_title']);
-        $this->setId($array['question_id']);
+        $this
+            ->setTitle($question_title)
+            ->setId($question_id)
+            ->setQcm_id($qcm_id);
     }
     /**
      * Get the value of answers
@@ -71,6 +81,26 @@ class Question
     public function setId($id)
     {
         $this->id = $id;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of qcm_id
+     */
+    public function getQcm_id()
+    {
+        return $this->qcm_id;
+    }
+
+    /**
+     * Set the value of qcm_id
+     *
+     * @return  self
+     */
+    public function setQcm_id($qcm_id)
+    {
+        $this->qcm_id = $qcm_id;
 
         return $this;
     }
