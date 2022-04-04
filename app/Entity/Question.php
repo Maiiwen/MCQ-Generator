@@ -21,6 +21,8 @@ class Question
             ->setTitle($question_title)
             ->setId($question_id)
             ->setQcm_id($qcm_id);
+
+        return $this;
     }
     /**
      * Get the value of answers

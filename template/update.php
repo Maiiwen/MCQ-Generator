@@ -7,7 +7,7 @@
 <div class="container">
     <div class="row">
         <div class="col-12 col-sm-12 col-md-11 col-lg-9 col-xl-8 col-xl-6 mx-auto ">
-            <input type="hidden" id="qcm_id" value="<?= $qcmObj->getId() ?>
+            <input type="hidden" id="qcm_id" value="<?= $qcmObj->getId() ?>">
             <h1 class=" text-center">Modification d'un QCM</h1>
             <form action="/update/<?= $qcmObj->getId() ?>" method="POST" id="form">
                 <div class="form-floating mb-3">

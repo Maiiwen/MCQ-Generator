@@ -31,6 +31,13 @@ if (!empty($_POST)) {
         }
         header("Location: " . $url);
     }
+    if ($_POST['button'] == "add") {
+        if (!empty($_POST['qcm_id']) || !empty($_POST['question_id']) || !empty($_POST['answer_id'])) {
+
+            require '../app/Scripts/addHandler.php';
+            exit;
+        }
+    }
 }
 ?>
 
