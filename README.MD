@@ -8,7 +8,7 @@
   </a>
 </p>
 
-> MQC Generator is a web interface to manage (create/delete/modify), view, and
+> MCQ Generator is a web interface to manage (create/delete/modify), view, and
 > answer several MQCs
 
 ### 🏠 [Homepage](/)
