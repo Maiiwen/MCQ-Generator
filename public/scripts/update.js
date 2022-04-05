@@ -1,53 +1,50 @@
-document.querySelectorAll('.deleteQuestion').forEach((element) => {
-  element.addEventListener('click', removeQuestion);
-});
-document.querySelectorAll('.deleteAnswer').forEach((element) => {
-  element.addEventListener('click', removeAnswer);
-});
+function reloadEventListeners() {
+  document.querySelectorAll('.deleteQuestion').forEach((element) => {
+    element.removeEventListener('click', removeQuestion);
+  });
+  document.querySelectorAll('.deleteAnswer').forEach((element) => {
+    element.removeEventListener('click', removeAnswer);
+  });
 
-document.querySelectorAll('#addAnswer').forEach((element) => {
-  element.addEventListener('click', addAnswer);
-});
-document.querySelectorAll('#addQuest').forEach((element) => {
-  element.addEventListener('click', addQuestion);
-});
+  document.querySelectorAll('#addAnswer').forEach((element) => {
+    element.removeEventListener('click', addAnswer);
+  });
+  document.querySelectorAll('#addQuest').forEach((element) => {
+    element.removeEventListener('click', addQuestion);
+  });
+  document.querySelectorAll('.deleteQuestion').forEach((element) => {
+    element.addEventListener('click', removeQuestion);
+  });
+  document.querySelectorAll('.deleteAnswer').forEach((element) => {
+    element.addEventListener('click', removeAnswer);
+  });
+
+  document.querySelectorAll('#addAnswer').forEach((element) => {
+    element.addEventListener('click', addAnswer);
+  });
+  document.querySelectorAll('#addQuest').forEach((element) => {
+    element.addEventListener('click', addQuestion);
+  });
+}
 
 function addAnswer(e) {
   e.preventDefault();
   fetchAdd(
+    this,
     document.querySelector('#qcm_id').value,
     this.parentElement.parentElement.parentElement.querySelector('button').value
-  ).then(() => {
-    let input = document.createElement('input');
-    input.type = 'hidden';
-    input.name = 'button';
-    input.value = 'update';
-    document.querySelector('form').appendChild(input);
-    document.querySelector('form').submit();
-  });
+  );
 }
 function addQuestion(e) {
   e.preventDefault();
-  fetchAdd(document.querySelector('#qcm_id').value).then(() => {
-    let input = document.createElement('input');
-    input.type = 'hidden';
-    input.name = 'button';
-    input.value = 'update';
-    document.querySelector('form').appendChild(input);
-    document.querySelector('form').submit();
-  });
+  fetchAdd(this, document.querySelector('#qcm_id').value);
 }
 
 function removeQuestion(e) {
   if (e) {
     e.preventDefault();
     value1 = this.value;
-  } else {
-    value1 = document;
   }
-  this.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.querySelector(
-    '.deleteQuestion'
-  ).value;
 
   if (document.querySelectorAll('.deleteQuestion').length == 1) {
     if (
@@ -60,8 +57,14 @@ function removeQuestion(e) {
       });
     }
   } else {
+    console.log(value1);
+    document
+      .querySelector('.deleteQuestion[value="' + value1 + '"]')
+      .parentElement.parentElement.querySelector('.deleteQuestion').value;
     fetchDel('question_id', value1);
-    this.parentElement.parentElement.remove();
+    document
+      .querySelector('.deleteQuestion[value="' + value1 + '"]')
+      .parentElement.parentElement.remove();
   }
 }
 
@@ -74,6 +77,10 @@ function removeAnswer(e) {
         'Si vous supprimez cette réponse, cela entrainera la suppression de la question'
       )
     ) {
+      value1 =
+        this.parentElement.parentElement.parentElement.parentElement.querySelector(
+          '.deleteQuestion'
+        ).value;
       removeQuestion().then(() => {
         window.location.replace('/');
       });
@@ -110,7 +117,7 @@ async function fetchDel(content, value) {
   //   console.log(data);
   // });
 }
-async function fetchAdd(qcm_id, question_id = undefined) {
+async function fetchAdd(element, qcm_id, question_id = undefined) {
   await fetch('http://qcm.local/', {
     credentials: 'omit',
     headers: {
@@ -129,12 +136,20 @@ async function fetchAdd(qcm_id, question_id = undefined) {
         : 'question_id=' + question_id) + '&button=add',
     method: 'POST',
     mode: 'cors',
-  });
-
-  // .then((response) => {
-  //   return response.text();
-  // })
-  // .then((data) => {
-  //   document.body.innerHTML += data;
-  // });
+  })
+    .then((response) => {
+      return response.text();
+    })
+    .then((data) => {
+      let el = document.createElement('li');
+      el.classList.add('list-group-item');
+      el.innerHTML = data;
+      element.parentElement.parentElement.insertBefore(
+        el,
+        element.parentElement
+      );
+      reloadEventListeners();
+    });
 }
+
+reloadEventListeners();

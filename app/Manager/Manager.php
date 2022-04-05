@@ -17,4 +17,10 @@ class Manager
 
         return self::$pdo;
     }
+    public static function lastInsertID()
+    {
+        $pdo = self::getPdoInstance();
+
+        return $pdo->lastInsertID();
+    }
 }

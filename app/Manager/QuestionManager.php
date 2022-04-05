@@ -96,4 +96,15 @@ class QuestionManager extends Manager
             ["question_id" => $id]
         );
     }
+    public static function getLastId(): int
+    {
+        $pdo = self::getPdoInstance();
+
+        $sql = "SELECT MAX(question_id) as question_id FROM questions;";
+        $res = $pdo->prepare($sql);
+        $res->execute();
+        $result = $res->fetch(PDO::FETCH_ASSOC);
+
+        return $result['question_id'];
+    }
 }
